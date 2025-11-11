@@ -5,6 +5,7 @@
   fpc,
   sqlite,
   lib,
+  makeWrapper,
 }:
 stdenv.mkDerivation {
   pname = "pasls";
@@ -17,6 +18,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     xmake
     fpc
+    makeWrapper
   ];
 
   buildInputs = [
@@ -39,6 +41,9 @@ stdenv.mkDerivation {
     mkdir -p $out/bin
 
     install -Dm775 build/linux/x86_64/release/pasls $out/bin/pasls
+
+    wrapProgram $out/bin/pasls \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ sqlite ]}
 
     runHook postBuild
   '';
