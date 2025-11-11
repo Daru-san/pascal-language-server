@@ -47,3 +47,13 @@ clients/pasls-vscode/out/*
 *.code-workspace
 *.sublime-project
 *.sublime-workspace
+
+build
+.direnv
+.xmake
+*.o
+*.ppu
+*.compiled
+*.res
+backup
+result
