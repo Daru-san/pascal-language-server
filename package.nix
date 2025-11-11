@@ -1,7 +1,7 @@
 {
   xmake,
   stdenv,
-  lazarus_paths,
+  lazarus-paths,
   fpc,
   sqlite,
   lib,
@@ -12,7 +12,7 @@ stdenv.mkDerivation {
 
   src = ./.;
 
-  LAZARUS_PATHS = lazarus_paths;
+  LAZARUS_PATHS = lazarus-paths;
 
   nativeBuildInputs = [
     xmake
@@ -26,7 +26,19 @@ stdenv.mkDerivation {
   buildPhase = ''
     runHook preBuild
 
-    xmake
+    export HOME=(mktemp -d)
+
+    xmake build
+
+    runHook postBuild
+  '';
+
+  installPhase = ''
+    runHook preBuild
+
+    mkdir -p $out/bin
+
+    install -Dm775 build/linux/x86_64/release/pasls $out/bin/pasls
 
     runHook postBuild
   '';
